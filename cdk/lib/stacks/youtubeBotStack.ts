@@ -1,4 +1,4 @@
-import { Duration, RemovalPolicy } from 'aws-cdk-lib';
+import { Duration, RemovalPolicy, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { Code, Function, Runtime } from 'aws-cdk-lib/aws-lambda';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
@@ -6,9 +6,14 @@ import { Choice, Condition, Map, Pass, StateMachine } from 'aws-cdk-lib/aws-step
 import { LambdaInvoke } from 'aws-cdk-lib/aws-stepfunctions-tasks';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { SfnStateMachine } from 'aws-cdk-lib/aws-events-targets';
+import { StageProps } from '../config/stages';
 
-export class YoutubeBotStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+export interface YoutubeBotStackProps extends StackProps {
+  readonly stage: StageProps;
+}
+
+export class YoutubeBotStack extends Stack {
+  constructor(scope: Construct, id: string, props: YoutubeBotStackProps) {
     super(scope, id, props);
 
     // S3 bucket for storing video files
@@ -21,9 +26,10 @@ export class YoutubeBotStack extends cdk.Stack {
     const checkForVideosLambda = new Function(this, 'CheckForVideos', {
       runtime: Runtime.PYTHON_3_9,
       handler: 'checkVideos.process',
-      code: Code.fromAsset('service/src/handler/checkVideos'),
+      code: Code.fromAsset('../service/src/handler'),
       environment: {
-        VIDEO_BUCKET_NAME: videoBucket.bucketName,
+        YOUTUBE_API_KEY: props.stage.apiKey,
+        YOUTUBE_CHANNEL_IDS: props.stage.channels,
       },
     });
 
@@ -31,7 +37,7 @@ export class YoutubeBotStack extends cdk.Stack {
     const downloadVideoLambda = new Function(this, 'DownloadVideo', {
       runtime: Runtime.PYTHON_3_9,
       handler: 'downloadVideo.process',
-      code: Code.fromAsset('service/src/handler/downloadVideo'),
+      code: Code.fromAsset('../service/src/handler'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
       },
@@ -41,7 +47,7 @@ export class YoutubeBotStack extends cdk.Stack {
     const editVideoLambda = new Function(this, 'EditVideo', {
       runtime: Runtime.PYTHON_3_9,
       handler: 'editVideo.process',
-      code: Code.fromAsset('service/src/handler/editVideo'),
+      code: Code.fromAsset('../service/src/handler'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
       },
@@ -51,7 +57,7 @@ export class YoutubeBotStack extends cdk.Stack {
     const uploadVideoLambda = new Function(this, 'UploadVideo', {
       runtime: Runtime.PYTHON_3_9,
       handler: 'uploadVideo.process',
-      code: Code.fromAsset('service/src/handler/uploadVideo'),
+      code: Code.fromAsset('../service/src/handler'),
     });
 
     // Grant permissions to Lambdas
