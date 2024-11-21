@@ -25,39 +25,46 @@ export class YoutubeBotStack extends Stack {
     // Lambda function to check for new videos
     const checkForVideosLambda = new Function(this, 'CheckForVideos', {
       runtime: Runtime.PYTHON_3_13,
-      handler: 'checkVideos.process',
+      handler: 'src.handler.checkVideos.process',
       code: Code.fromAsset('lambda_function.zip'),
       environment: {
         YOUTUBE_API_KEY: props.stage.apiKey,
         YOUTUBE_CHANNEL_IDS: JSON.stringify(props.stage.channels),
       },
+      timeout: Duration.minutes(2),
     });
 
     // Lambda function to download videos
     const downloadVideoLambda = new Function(this, 'DownloadVideo', {
       runtime: Runtime.PYTHON_3_13,
-      handler: 'downloadVideo.process',
+      handler: 'src.handler.downloadVideo.process',
       code: Code.fromAsset('lambda_function.zip'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
       },
+      timeout: Duration.minutes(2),
     });
 
     // Lambda function to edit videos
     const editVideoLambda = new Function(this, 'EditVideo', {
       runtime: Runtime.PYTHON_3_13,
-      handler: 'editVideo.process',
+      handler: 'src.handler.editVideo.process',
       code: Code.fromAsset('lambda_function.zip'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
       },
+      timeout: Duration.minutes(2),
     });
 
     // Lambda function to upload videos
     const uploadVideoLambda = new Function(this, 'UploadVideo', {
       runtime: Runtime.PYTHON_3_13,
-      handler: 'uploadVideo.process',
+      handler: 'src.handler.uploadVideo.process',
       code: Code.fromAsset('lambda_function.zip'),
+      environment: {
+        VIDEO_BUCKET_NAME: videoBucket.bucketName,
+      },
+      timeout: Duration.minutes(2),
     });
 
     // Grant permissions to Lambdas
