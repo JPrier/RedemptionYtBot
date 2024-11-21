@@ -7,6 +7,11 @@ node_modules
 .cdk.staging
 cdk.out
 
+# Build/Dependencies
+dist
+lambda_function.zip
+requirements.txt
+
 # KEYS
 keys.ts
 *keys*

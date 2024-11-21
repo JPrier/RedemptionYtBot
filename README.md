@@ -20,3 +20,5 @@ A bot to download new videos uploaded by given channels onto youtube, edits them
 2. Install [cdk]() and [npm]()
 
 ### Step 3: Deploy
+
+1. `npm run cdk-deploy`

@@ -1,7 +1,9 @@
+import os
+import json
 from googleapiclient.discovery import build
 
 API_KEY = os.getenv('YOUTUBE_API_KEY')
-CHANNEL_IDS = os.getenv('YOUTUBE_CHANNEL_IDS')
+CHANNEL_IDS = json.loads(os.getenv('YOUTUBE_CHANNEL_IDS', '[]'))
 
 def process(event, context):
     youtube = build('youtube', 'v3', developerKey=API_KEY)
