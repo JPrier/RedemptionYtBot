@@ -24,20 +24,20 @@ export class YoutubeBotStack extends Stack {
 
     // Lambda function to check for new videos
     const checkForVideosLambda = new Function(this, 'CheckForVideos', {
-      runtime: Runtime.PYTHON_3_9,
+      runtime: Runtime.PYTHON_3_13,
       handler: 'checkVideos.process',
-      code: Code.fromAsset('../service/src/handler'),
+      code: Code.fromAsset('lambda_function.zip'),
       environment: {
         YOUTUBE_API_KEY: props.stage.apiKey,
-        YOUTUBE_CHANNEL_IDS: props.stage.channels,
+        YOUTUBE_CHANNEL_IDS: JSON.stringify(props.stage.channels),
       },
     });
 
     // Lambda function to download videos
     const downloadVideoLambda = new Function(this, 'DownloadVideo', {
-      runtime: Runtime.PYTHON_3_9,
+      runtime: Runtime.PYTHON_3_13,
       handler: 'downloadVideo.process',
-      code: Code.fromAsset('../service/src/handler'),
+      code: Code.fromAsset('lambda_function.zip'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
       },
@@ -45,9 +45,9 @@ export class YoutubeBotStack extends Stack {
 
     // Lambda function to edit videos
     const editVideoLambda = new Function(this, 'EditVideo', {
-      runtime: Runtime.PYTHON_3_9,
+      runtime: Runtime.PYTHON_3_13,
       handler: 'editVideo.process',
-      code: Code.fromAsset('../service/src/handler'),
+      code: Code.fromAsset('lambda_function.zip'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
       },
@@ -55,9 +55,9 @@ export class YoutubeBotStack extends Stack {
 
     // Lambda function to upload videos
     const uploadVideoLambda = new Function(this, 'UploadVideo', {
-      runtime: Runtime.PYTHON_3_9,
+      runtime: Runtime.PYTHON_3_13,
       handler: 'uploadVideo.process',
-      code: Code.fromAsset('../service/src/handler'),
+      code: Code.fromAsset('lambda_function.zip'),
     });
 
     // Grant permissions to Lambdas
