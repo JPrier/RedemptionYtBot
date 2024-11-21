@@ -11,7 +11,10 @@ cdk.out
 dist
 lambda_function.zip
 requirements.txt
+*pycache*
+*pytest_*
 
+# CONSTANTS
 # KEYS
 keys.ts
 *keys*

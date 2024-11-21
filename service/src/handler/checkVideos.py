@@ -1,17 +1,8 @@
-import os
-import json
-from googleapiclient.discovery import build
+import logic.videoComponent as videoComponent
 
-API_KEY = os.getenv('YOUTUBE_API_KEY')
-CHANNEL_IDS = json.loads(os.getenv('YOUTUBE_CHANNEL_IDS', '[]'))
 
 def process(event, context):
-    youtube = build('youtube', 'v3', developerKey=API_KEY)
-    for channel in CHANNEL_IDS:
-        request = youtube.search().list(
-            part='snippet',
-            channelId=channel,
-            maxResults=5,  # Fetch up to 5 latest videos
-            order='date'
-        )
-        print(request.execute())
+    print(f'Received CheckVideo Event {event}')
+    videos = videoComponent.collectNewVideos(event.get('time', ''))
+    print(f'Collected {len(videos)} videos')
+    return {"new_videos": videos}
