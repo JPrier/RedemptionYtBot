@@ -10,7 +10,7 @@ def process(event, context):
     for channel in CHANNEL_IDS:
         request = youtube.search().list(
             part='snippet',
-            channelId=CHANNEL_ID,
+            channelId=channel,
             maxResults=5,  # Fetch up to 5 latest videos
             order='date'
         )
