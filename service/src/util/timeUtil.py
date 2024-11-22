@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 
+
 # Timestamp is in RFC3339 format
 def addMinutesToTimestamp(timestamp, delta):
     # Parse the RFC 3339 timestamp

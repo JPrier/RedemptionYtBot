@@ -8,6 +8,7 @@ boto3 = "*"
 google-api-python-client = "*"
 yt-dlp = "*"
 pylint = "*"
+ruff = "*"
 pre-commit = "*"
 
 [dev-packages]

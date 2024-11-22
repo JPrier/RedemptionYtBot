@@ -1,5 +1,15 @@
 repos:
-- repo: https://github.com/pre-commit/mirrors-pylint
-  rev: v3.0.0a5
+# - repo: https://github.com/pylint-dev/pylint
+#   rev: v3.3.1
+#   hooks:
+#   - id: pylint
+#     args:
+#       - --errors-only
+#       - --rcfile=./pylintrc
+#     files: \.py$
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.7.4
   hooks:
-  - id: pylint
+  - id: ruff
+    args: [--fix]
+  - id: ruff-format

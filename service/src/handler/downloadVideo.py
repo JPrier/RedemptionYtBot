@@ -1,2 +1,2 @@
 def process(event, context):
-  print(event)
+    print(event)

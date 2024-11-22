@@ -1,10 +1,13 @@
-import dependency.youtubeAccessor as youtubeAccessor
-import util.timeUtil as timeUtil
+from dependency import youtubeAccessor
+from util import timeUtil
 
 # TODO: Move this to a env variable to support dynamic period changes
-TIME_DIFF = 60 # Number of Minutes for video checks
+TIME_DIFF = 60  # Number of Minutes for video checks
+
 
 def getVideosFromChannelId(channelId, timestamp):
     # TODO: Figure out what data is required from the youtube response and condense it into an internal type
     beforeTimestamp = timeUtil.addMinutesToTimestamp(timestamp, TIME_DIFF)
-    return youtubeAccessor.getVideosFromChannelIdBetweenTimestamps(channelId, beforeTimestamp, timestamp)
+    return youtubeAccessor.getVideosFromChannelIdBetweenTimestamps(
+        channelId, beforeTimestamp, timestamp
+    )
