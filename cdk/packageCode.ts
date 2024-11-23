@@ -5,7 +5,8 @@ import archiver from 'archiver';
 
 // Directories
 const distDir = path.join(__dirname, '../dist');
-const serviceDir = path.join(__dirname, '../redemptionBot');
+const serviceDir = path.join(__dirname, '../service');
+const codeDir = path.join(__dirname, '../service/src/redemptionBot');
 const srcDist = path.join(distDir, 'redemptionBot');
 const zipFile = path.join(__dirname, 'lambda_function.zip');
 
@@ -31,7 +32,7 @@ function copyDirectory(srcDir: string, distDir: string) {
     // Exclude `__pycache__`, caches, and test-related files
     if (file === '__pycache__' || file.endsWith('.pyc') ||
         file.startsWith('test_') || file === 'tst' ||
-        file.endsWith('_cache')) {
+        file.endsWith('_cache') || file.startsWith('.')) {
       console.log(`Skipping: ${file}`);
       return;
     }
@@ -64,11 +65,15 @@ function packageLambda() {
   // Copy Lambda function code
   console.log('Copying Lambda function code...');
   fs.mkdirSync(srcDist)
-  copyDirectory(serviceDir, srcDist);
+  copyDirectory(codeDir, srcDist);
 
   // Install dependencies
   console.log('Installing dependencies...');
+  // Update lock file used for next step
+  runCommand('pipenv lock', serviceDir);
+  // Create requirements file used for the pip install
   runCommand('pipenv requirements > requirements.txt', serviceDir);
+  // Install all of the dependencies into the dist directory
   runCommand(`pipenv run pip install -r ./requirements.txt --target ${distDir}`, serviceDir);
 
   // Zip the Lambda package

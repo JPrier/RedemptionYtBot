@@ -25,7 +25,7 @@ export class YoutubeBotStack extends Stack {
     // Lambda function to check for new videos
     const checkForVideosLambda = new Function(this, 'CheckForVideos', {
       runtime: Runtime.PYTHON_3_13,
-      handler: 'redemptionBot.src.handler.checkVideos.process',
+      handler: 'redemptionBot.handler.checkVideos.process',
       code: Code.fromAsset('lambda_function.zip'),
       environment: {
         YOUTUBE_API_KEY: props.stage.apiKey,
@@ -37,7 +37,7 @@ export class YoutubeBotStack extends Stack {
     // Lambda function to download videos
     const downloadVideoLambda = new Function(this, 'DownloadVideo', {
       runtime: Runtime.PYTHON_3_13,
-      handler: 'redemptionBot.src.handler.downloadVideo.process',
+      handler: 'redemptionBot.handler.downloadVideo.process',
       code: Code.fromAsset('lambda_function.zip'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
@@ -48,7 +48,7 @@ export class YoutubeBotStack extends Stack {
     // Lambda function to edit videos
     const editVideoLambda = new Function(this, 'EditVideo', {
       runtime: Runtime.PYTHON_3_13,
-      handler: 'redemptionBot.src.handler.editVideo.process',
+      handler: 'redemptionBot.handler.editVideo.process',
       code: Code.fromAsset('lambda_function.zip'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
@@ -59,7 +59,7 @@ export class YoutubeBotStack extends Stack {
     // Lambda function to upload videos
     const uploadVideoLambda = new Function(this, 'UploadVideo', {
       runtime: Runtime.PYTHON_3_13,
-      handler: 'redemptionBot.src.handler.uploadVideo.process',
+      handler: 'redemptionBot.handler.uploadVideo.process',
       code: Code.fromAsset('lambda_function.zip'),
       environment: {
         VIDEO_BUCKET_NAME: videoBucket.bucketName,
