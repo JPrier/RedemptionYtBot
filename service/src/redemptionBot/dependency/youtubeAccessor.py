@@ -31,4 +31,6 @@ def getVideosFromChannelIdBetweenTimestamps(
     print(
         f'Successfully completed retrieved videos for channel {channelId} between {afterTimestamp} and {beforeTimestamp}, and received {len(response['items'])}'
     )
+    print(f"Response: {response}")
+    print(f'Items: {response['items']}')
     return response["items"]

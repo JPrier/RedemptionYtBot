@@ -33,6 +33,15 @@ class TestCheckVideos(unittest.TestCase):
         mock_collect_new_videos.assert_called_once_with(expectedTime)
         self.assertEqual(result, {"new_videos": []})
 
+    @patch("redemptionBot.handler.checkVideos.videosComponent.collectNewVideos")
+    def test_process_nullInput_success(self, mock_collect_new_videos):
+        mock_collect_new_videos.return_value = [{"id": "video1"}]
+
+        result = underTest.process(None, None)
+        expectedTime = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+        mock_collect_new_videos.assert_called_once_with(expectedTime)
+        self.assertEqual(result, {"new_videos": [{"id": "video1"}]})
+
 
 if __name__ == "__main__":
     unittest.main()
