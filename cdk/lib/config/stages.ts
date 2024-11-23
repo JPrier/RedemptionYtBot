@@ -8,6 +8,7 @@ export interface StageProps {
   channels: string[];
   apiKey: string;
   oauthKey: string;
+  frequencyInMinutes: number;
 }
 
 export const TEST: StageProps = {
@@ -18,7 +19,8 @@ export const TEST: StageProps = {
   },
   channels: CHANNEL_IDS,
   apiKey: API_KEY,
-  oauthKey: OAUTH_KEY
+  oauthKey: OAUTH_KEY,
+  frequencyInMinutes: 720,
 };
 
 export const STAGES = [TEST];

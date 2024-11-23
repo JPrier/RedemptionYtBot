@@ -30,6 +30,7 @@ export class YoutubeBotStack extends Stack {
       environment: {
         YOUTUBE_API_KEY: props.stage.apiKey,
         YOUTUBE_CHANNEL_IDS: JSON.stringify(props.stage.channels),
+        TIME_DELTA: props.stage.frequencyInMinutes.toString(),
       },
       timeout: Duration.minutes(2),
     });
@@ -128,7 +129,7 @@ export class YoutubeBotStack extends Stack {
 
     // EventBridge rule to trigger Step Functions every X Minutes
     new Rule(this, 'ScheduleRule', {
-      schedule: Schedule.rate(Duration.hours(12)),
+      schedule: Schedule.rate(Duration.minutes(props.stage.frequencyInMinutes)),
       targets: [new SfnStateMachine(stateMachine)],
     });
   }
