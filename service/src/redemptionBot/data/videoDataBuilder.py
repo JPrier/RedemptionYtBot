@@ -1,5 +1,5 @@
-from dependency import youtubeAccessor
-from util import timeUtil
+from redemptionBot.dependency import youtubeAccessor
+from redemptionBot.util import timeUtil
 
 # TODO: Move this to a env variable to support dynamic period changes
 TIME_DIFF = 60  # Number of Minutes for video checks

@@ -1,6 +1,6 @@
 import os
 import json
-from data import videoDataBuilder
+from redemptionBot.data import videoDataBuilder
 
 
 def collectNewVideos(timestamp):

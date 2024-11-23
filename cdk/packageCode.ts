@@ -4,14 +4,15 @@ import { execSync } from 'child_process';
 import archiver from 'archiver';
 
 // Directories
-const distDir = '../dist';
-const srcDir = '../service';
-const zipFile = 'lambda_function.zip';
+const distDir = path.join(__dirname, '../dist');
+const serviceDir = path.join(__dirname, '../redemptionBot');
+const srcDist = path.join(distDir, 'redemptionBot');
+const zipFile = path.join(__dirname, 'lambda_function.zip');
 
 // Helper function to run commands synchronously
-function runCommand(command: string) {
+function runCommand(command: string, workingDir: string) {
   try {
-    execSync(command, { stdio: 'inherit' });
+    execSync(command, { stdio: 'inherit', cwd: workingDir });
   } catch (error) {
     console.error(`Error running command: ${command}`);
     process.exit(1);
@@ -27,6 +28,14 @@ function copyDirectory(srcDir: string, distDir: string) {
 
   // Read the contents of the source directory
   fs.readdirSync(srcDir).forEach((file) => {
+    // Exclude `__pycache__`, caches, and test-related files
+    if (file === '__pycache__' || file.endsWith('.pyc') ||
+        file.startsWith('test_') || file === 'tst' ||
+        file.endsWith('_cache')) {
+      console.log(`Skipping: ${file}`);
+      return;
+    }
+
     const srcPath = path.join(srcDir, file);
     const distPath = path.join(distDir, file);
 
@@ -54,12 +63,13 @@ function packageLambda() {
 
   // Copy Lambda function code
   console.log('Copying Lambda function code...');
-  copyDirectory(srcDir, distDir);
+  fs.mkdirSync(srcDist)
+  copyDirectory(serviceDir, srcDist);
 
   // Install dependencies
   console.log('Installing dependencies...');
-  runCommand('pipenv requirements > requirements.txt');
-  runCommand(`pipenv run pip install -r ./requirements.txt --target ${distDir}`);
+  runCommand('pipenv requirements > requirements.txt', serviceDir);
+  runCommand(`pipenv run pip install -r ./requirements.txt --target ${distDir}`, serviceDir);
 
   // Zip the Lambda package
   console.log('Zipping Lambda package...');

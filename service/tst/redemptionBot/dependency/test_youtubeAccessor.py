@@ -1,10 +1,10 @@
 import unittest
 from unittest.mock import patch, MagicMock
-from dependency import youtubeAccessor as underTest
+from redemptionBot.dependency import youtubeAccessor as underTest
 
 
 class TestYoutubeAccessor(unittest.TestCase):
-    @patch("dependency.youtubeAccessor.build")
+    @patch("redemptionBot.dependency.youtubeAccessor.build")
     @patch("os.getenv")
     def test_getVideosFromChannelId(self, mock_getenv, mock_build):
         mock_getenv.return_value = "TEST_KEY"
@@ -28,7 +28,7 @@ class TestYoutubeAccessor(unittest.TestCase):
         )
         self.assertEqual(result, [{"id": "video1"}, {"id": "video2"}])
 
-    @patch("dependency.youtubeAccessor.build")
+    @patch("redemptionBot.dependency.youtubeAccessor.build")
     @patch("os.getenv")
     def test_getVideosFromChannelIdBetweenTimestamps(self, mock_getenv, mock_build):
         mock_getenv.return_value = "TEST_KEY"

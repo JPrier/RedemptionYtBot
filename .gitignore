@@ -13,6 +13,7 @@ lambda_function.zip
 requirements.txt
 *pycache*
 *pytest_*
+*ruff_*
 
 # CONSTANTS
 # KEYS

@@ -1,10 +1,12 @@
 import unittest
 from unittest.mock import patch
-import logic.videosComponent as underTest
+import redemptionBot.logic.videosComponent as underTest
 
 
 class TestVideosComponent(unittest.TestCase):
-    @patch("data.videoDataBuilder.getVideosFromChannelId")
+    @patch(
+        "redemptionBot.logic.videosComponent.videoDataBuilder.getVideosFromChannelId"
+    )
     @patch("os.getenv")
     def test_collectNewVideos(self, mock_getenv, mock_get_videos):
         mock_getenv.return_value = '["channel1", "channel2"]'

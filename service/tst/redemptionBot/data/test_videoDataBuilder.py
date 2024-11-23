@@ -1,11 +1,13 @@
 import unittest
 from unittest.mock import patch
-import data.videoDataBuilder as underTest
+import redemptionBot.data.videoDataBuilder as underTest
 
 
 class TestVideoDataBuilder(unittest.TestCase):
-    @patch("dependency.youtubeAccessor.getVideosFromChannelIdBetweenTimestamps")
-    @patch("util.timeUtil.addMinutesToTimestamp")
+    @patch(
+        "redemptionBot.data.videoDataBuilder.youtubeAccessor.getVideosFromChannelIdBetweenTimestamps"
+    )
+    @patch("redemptionBot.data.videoDataBuilder.timeUtil.addMinutesToTimestamp")
     def test_getVideosFromChannelId(self, mock_add_minutes, mock_get_videos):
         channel_id = "test_channel"
         timestamp = "2024-11-21T10:00:00Z"

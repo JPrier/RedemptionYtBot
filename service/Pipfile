@@ -7,13 +7,12 @@ name = "pypi"
 boto3 = "*"
 google-api-python-client = "*"
 yt-dlp = "*"
-pylint = "*"
-ruff = "*"
-pre-commit = "*"
 
 [dev-packages]
 pytest = "*"
 pylint = "*"
+ruff = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.13"
